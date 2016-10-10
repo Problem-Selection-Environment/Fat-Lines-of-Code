@@ -1,0 +1,111 @@
+#include <string>
+#include <iostream>
+#include <map>
+using namespace std;
+
+multimap <string, int> bestiary;
+multimap <int, string> bestiary_hp;
+multimap <string, int>::iterator it;
+multimap <int, string>::iterator it_hp;
+
+void handle_add(string n, int hp) {
+	cout << "add " << n << " " << hp << " hitpoints" << endl;
+	bestiary.insert(pair<string, int>(n, hp));
+}
+
+void handle_find(string n) {
+	cout << "find " << n << endl;
+	cout << n << " = " << bestiary.find(n)->second << endl;
+}
+
+void handle_delete(string n) {
+	cout << "delete " << n << endl; 
+	bestiary.erase(n);
+}
+
+void handle_list() {
+	cout << "list them (in alphabetical order if you can)" << endl;
+	for (it = bestiary.begin(); it != bestiary.end(); it++)
+	{
+		cout << it->first << " = " << it->second << endl;
+	}
+}
+
+void handle_list_hp() {
+	cout << "list them in hp order" << endl;
+	for (it = bestiary.begin(); it != bestiary.end(); it++)
+	{
+		//bestiary_hp.clear();
+		bestiary_hp.insert(pair<int, string>(it->second, it->first));
+	}
+	for (it_hp = bestiary_hp.begin(); it_hp != bestiary_hp.end(); it_hp++)
+	{
+		cout << it_hp->second << " = " << it_hp->first << endl;
+	}
+}
+
+void handle_clear() {
+	cout << "clear the bestiary" << endl;
+	bestiary.clear();
+}
+
+void handle_read() {
+	cout << "execute clear, then read the bestiary from bestiary.txt" << endl;
+}
+
+void handle_save() {
+	cout << "save the bestiary to bestiary.txt" << endl;
+}
+
+
+
+
+int main(int argc, char *argv[]) {
+	char command;
+	string name;
+	int data;
+
+
+
+	while(true) {
+		cout << "Ready for a command: ";
+		cin >> command;
+
+		switch(command) {
+			case 'a':
+				cin >> name;
+				cin >> data;
+				handle_add(name, data);
+				break;
+			case 'f' :
+				cin >> name;
+				handle_find(name);
+				break;
+			case 'd' :
+				cin >> name;
+				handle_delete(name);
+				break;
+			case 'l' :
+				handle_list();
+				break;
+			case 'h':
+				handle_list_hp();
+				break;
+			case 'c':
+				handle_clear();
+				break;
+			case 'r':
+				handle_read();
+				break;
+			case 's':
+				handle_save();
+				break;
+			case 'q': // Obviously, this isn't part of the specification
+				break;
+		}
+		if(command == 'q') break;
+	}
+
+	system("pause");
+
+}
